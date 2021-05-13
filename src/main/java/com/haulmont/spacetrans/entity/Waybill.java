@@ -28,6 +28,18 @@ public class Waybill {
     @Id
     private UUID id;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @JoinColumn(name = "SHIPPER_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Customer shipper;
+
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @JoinColumn(name = "CONSIGNEE_ID", nullable = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Customer consignee;
+
     @Column(name = "REFERENCE")
     private String reference;
 
@@ -60,6 +72,22 @@ public class Waybill {
     @PositiveOrZero
     @Column(name = "TOTAL_CHARGE")
     private Double totalCharge;
+
+    public Customer getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(Customer consignee) {
+        this.consignee = consignee;
+    }
+
+    public Customer getShipper() {
+        return shipper;
+    }
+
+    public void setShipper(Customer shipper) {
+        this.shipper = shipper;
+    }
 
     public Double getTotalCharge() {
         return totalCharge;
