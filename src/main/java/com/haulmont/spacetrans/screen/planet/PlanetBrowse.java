@@ -1,15 +1,13 @@
 package com.haulmont.spacetrans.screen.planet;
 
 import com.haulmont.spacetrans.app.PlanetImporter;
-import io.jmix.ui.component.FileUploadField;
 import io.jmix.ui.component.SingleFileUploadField;
 import io.jmix.ui.component.Table;
-import io.jmix.ui.component.UploadField;
+import io.jmix.ui.model.CollectionLoader;
 import io.jmix.ui.model.InstanceContainer;
 import io.jmix.ui.screen.*;
 import com.haulmont.spacetrans.entity.Planet;
 import liquibase.util.csv.CSVReader;
-import org.apache.tomcat.util.http.fileupload.util.Streams;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -24,6 +22,9 @@ public class PlanetBrowse extends StandardLookup<Planet> {
     private InstanceContainer<Planet> selectedPlanet;
 
     @Inject
+    private CollectionLoader<Planet> planetsDl;
+
+    @Inject
     private PlanetImporter planetImporter;
 
 
@@ -36,10 +37,10 @@ public class PlanetBrowse extends StandardLookup<Planet> {
     @Subscribe("importPlanetsBtn")
     public void onImportPlanetsBtnFileUploadSucceed(SingleFileUploadField.FileUploadSucceedEvent event) throws IOException {
         SingleFileUploadField source = (SingleFileUploadField) event.getSource();
-
         try(CSVReader csvReader = new CSVReader(new InputStreamReader(source.getFileContent()))) {
             planetImporter.importPlanets(csvReader.readAll());
         }
+        planetsDl.load();
     }
 
 }
