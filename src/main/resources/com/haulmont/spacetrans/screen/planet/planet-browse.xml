@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://planetBrowse.caption"
+        focusComponent="planetsTable">
+    <data readOnly="true">
+        <collection id="planetsDc"
+                    class="com.haulmont.spacetrans.entity.Planet">
+            <fetchPlan extends="_base"/>
+            <loader id="planetsDl">
+                <query>
+                    <![CDATA[select e from st_Planet e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="selectedPlanet" class="com.haulmont.spacetrans.entity.Planet"/>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="planetsWithPictures" spacing="true">
+        <filter id="filter"
+                dataLoader="planetsDl">
+            <properties include=".*"/>
+        </filter>
+        <gridLayout id="planetsWithPictures" spacing="true" width="100%">
+            <columns count="5"/>
+            <rows>
+                <row>
+                    <groupTable id="planetsTable" dataContainer="planetsDc" colspan="4" width="100%">
+                        <actions>
+                            <action id="create" type="create"/>
+                            <action id="edit" type="edit"/>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                            <column id="mass"/>
+                            <column id="semiMajorAxis"/>
+                            <column id="orbitalPeriod"/>
+                            <column id="rotationPeriod"/>
+                            <column id="rings"/>
+                            <column id="atmosphere"/>
+                        </columns>
+                        <simplePagination/>
+                        <buttonsPanel id="buttonsPanel"
+                                      alwaysVisible="true">
+                            <button id="createBtn" action="planetsTable.create"/>
+                            <button id="editBtn" action="planetsTable.edit"/>
+                            <button id="removeBtn" action="planetsTable.remove"/>
+                            <fileUpload id="importPlanetsBtn" uploadButtonCaption="Import planets" permittedExtensions=".csv"/>
+                        </buttonsPanel>
+                    </groupTable>
+                    <image id="planetPicture"
+                           alternateText=""
+                           dataContainer="selectedPlanet"
+                           property="picture"
+                           width="100%"/>
+                </row>
+            </rows>
+        </gridLayout>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

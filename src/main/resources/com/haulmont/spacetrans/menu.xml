@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/ui/menu">
+
+    <menu id="application" caption="msg://com.haulmont.spacetrans/menu.application" insertBefore="administration">
+        <item screen="st_User.browse" caption="msg://com.haulmont.spacetrans.screen.user/UserBrowse.caption"/>
+    </menu>
+
+    <menu id="planetarium" caption="msg://com.haulmont.spacetrans/menu.planetarium" insertBefore="administration">
+        <item screen="st_GasEntity.browse" caption="msg://com.haulmont.spacetrans.screen.gas/gasBrowse.caption"/>
+<!--        <item screen="st_Atmosphere.browse"-->
+<!--              caption="msg://com.haulmont.spacetrans.screen.atmosphere/atmosphereBrowse.caption"/>-->
+        <item screen="st_Planet.browse" caption="msg://com.haulmont.spacetrans.screen.planet/planetBrowse.caption"/>
+        <item screen="st_Moon.browse" caption="msg://com.haulmont.spacetrans.screen.moon/moonBrowse.caption"/>
+    </menu>
+
+    <menu id="transportation" caption="msg://com.haulmont.spacetrans/menu.transportation" insertBefore="administration">
+    </menu>
+
+</menu-config>

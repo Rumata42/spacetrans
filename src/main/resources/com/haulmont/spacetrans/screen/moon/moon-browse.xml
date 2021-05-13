@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://moonBrowse.caption"
+        focusComponent="moonsTable">
+    <data readOnly="true">
+        <collection id="moonsDc"
+                    class="com.haulmont.spacetrans.entity.Moon">
+            <fetchPlan extends="_base">
+                <property name="planet" fetchPlan="_base"/>
+                <property name="atmosphere" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="moonsDl">
+                <query>
+                    <![CDATA[select e from st_Moon e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="selectedMoon" class="com.haulmont.spacetrans.entity.Moon"/>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="moonsWithPictures" spacing="true">
+        <filter id="filter"
+                dataLoader="moonsDl">
+            <properties include=".*"/>
+        </filter>
+        <gridLayout id="moonsWithPictures" spacing="true" width="100%">
+            <columns count="5"/>
+                <rows>
+                    <row>
+                        <groupTable id="moonsTable"
+                                    width="100%"
+                                    colspan="4"
+                                    dataContainer="moonsDc">
+                            <actions>
+                                <action id="create" type="create"/>
+                                <action id="edit" type="edit"/>
+                                <action id="remove" type="remove"/>
+                            </actions>
+                            <columns>
+                                <column id="name"/>
+                                <column id="mass"/>
+                                <column id="planet"/>
+                                <column id="atmosphere"/>
+                            </columns>
+                            <simplePagination/>
+                            <buttonsPanel id="buttonsPanel"
+                                          alwaysVisible="true">
+                                <button id="createBtn" action="moonsTable.create"/>
+                                <button id="editBtn" action="moonsTable.edit"/>
+                                <button id="removeBtn" action="moonsTable.remove"/>
+                            </buttonsPanel>
+                        </groupTable>
+                        <image id="planetPicture"
+                               alternateText=""
+                               dataContainer="selectedMoon"
+                               property="picture"
+                               width="100%"/>
+                    </row>
+                </rows>
+        </gridLayout>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
