@@ -1,6 +1,7 @@
 package com.haulmont.spacetrans.entity;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.NumberFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,9 +9,11 @@ import javax.persistence.Embeddable;
 @JmixEntity(name = "st_Coordinates")
 @Embeddable
 public class Coordinates {
+    @NumberFormat(pattern = "#.######")
     @Column(name = "LATITUDE")
     private Double latitude;
 
+    @NumberFormat(pattern = "#.######")
     @Column(name = "LONGITUDE")
     private Double longitude;
 
