@@ -16,6 +16,7 @@
     <menu id="transportation" caption="msg://com.haulmont.spacetrans/menu.transportation" insertBefore="administration">
         <item screen="st_Spaceport.browse"
               caption="msg://com.haulmont.spacetrans.screen.spaceport/spaceportBrowse.caption"/>
+        <item screen="st_Carrier.browse" caption="msg://com.haulmont.spacetrans.screen.carrier/carrierBrowse.caption"/>
         <item screen="st_Individual.browse"
               caption="msg://com.haulmont.spacetrans.screen.individual/individualBrowse.caption"/>
         <item screen="st_Company.browse" caption="msg://com.haulmont.spacetrans.screen.company/companyBrowse.caption"/>

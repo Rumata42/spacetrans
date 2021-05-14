@@ -1,0 +1,6 @@
+<fetchPlans xmlns="http://jmix.io/schema/core/fetch-plans">
+    <fetchPlan entity="st_Spaceport" name="spaceport-with-planet-and-moon-fetch-plan" extends="_base">
+        <property name="planet" fetchPlan="_base"/>
+        <property name="moon" fetchPlan="_base"/>
+    </fetchPlan>
+</fetchPlans>

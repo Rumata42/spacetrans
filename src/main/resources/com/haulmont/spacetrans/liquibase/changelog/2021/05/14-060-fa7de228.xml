@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="st">
+        <addColumn tableName="ST_WAYBILL">
+            <column name="CARRIER_ID" type="UUID"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="CARRIER_ID" tableName="ST_WAYBILL"/>
+    </changeSet>
+    <changeSet id="2" author="st">
+        <addForeignKeyConstraint baseColumnNames="CARRIER_ID" baseTableName="ST_WAYBILL"
+                                 constraintName="FK_ST_WAYBILL_ON_CARRIER" referencedColumnNames="ID"
+                                 referencedTableName="ST_CARRIER"/>
+    </changeSet>
+</databaseChangeLog>

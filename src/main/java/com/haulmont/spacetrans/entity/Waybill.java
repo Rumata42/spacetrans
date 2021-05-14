@@ -73,6 +73,19 @@ public class Waybill {
     @Column(name = "TOTAL_CHARGE")
     private Double totalCharge;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @JoinColumn(name = "CARRIER_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Carrier carrier;
+
+    public Carrier getCarrier() {
+        return carrier;
+    }
+
+    public void setCarrier(Carrier carrier) {
+        this.carrier = carrier;
+    }
+
     public Customer getConsignee() {
         return consignee;
     }

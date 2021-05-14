@@ -33,6 +33,7 @@ public class SpaceportService {
                         PropertyCondition.equal("isDefault", true),
                         PropertyCondition.equal("planet", planet)
                 ))
+                .fetchPlan("spaceport-with-planet-and-moon-fetch-plan")
                 .optional();
     }
 
@@ -42,6 +43,7 @@ public class SpaceportService {
                         PropertyCondition.equal("isDefault", true),
                         PropertyCondition.equal("moon", moon)
                 ))
+                .fetchPlan("spaceport-with-planet-and-moon-fetch-plan")
                 .optional();
     }
 

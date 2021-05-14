@@ -58,6 +58,7 @@
                 <column id="destinationPort"/>
                 <column id="totalWeight"/>
                 <column id="totalCharge"/>
+                <column id="carrier"/>
             </columns>
             <simplePagination/>
             <buttonsPanel id="buttonsPanel"

@@ -8,8 +8,9 @@
             <fetchPlan extends="_base">
                 <property name="shipper" fetchPlan="_base"/>
                 <property name="consignee" fetchPlan="_base"/>
-                <property name="departurePort" fetchPlan="_base"/>
-                <property name="destinationPort" fetchPlan="_base"/>
+                <property name="departurePort" fetchPlan="spaceport-with-planet-and-moon-fetch-plan"/>
+                <property name="destinationPort" fetchPlan="spaceport-with-planet-and-moon-fetch-plan"/>
+                <property name="carrier" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
         </instance>
@@ -52,6 +53,7 @@
                         <action id="entityClear" type="entity_clear"/>
                     </actions>
                 </entityPicker>
+                <comboBox id="carrierField" property="carrier" enable="false"/>
                 <textField id="totalWeightField" property="totalWeight"/>
                 <textField id="totalChargeField" property="totalCharge"/>
             </column>

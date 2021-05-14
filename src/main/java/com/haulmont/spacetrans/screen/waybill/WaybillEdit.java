@@ -2,10 +2,12 @@ package com.haulmont.spacetrans.screen.waybill;
 
 import com.haulmont.spacetrans.app.SpaceportService;
 import com.haulmont.spacetrans.entity.AstronomicalBody;
+import com.haulmont.spacetrans.entity.Carrier;
 import com.haulmont.spacetrans.entity.Customer;
 import com.haulmont.spacetrans.entity.CustomerType;
 import com.haulmont.spacetrans.entity.Moon;
 import com.haulmont.spacetrans.entity.Planet;
+import com.haulmont.spacetrans.entity.Spaceport;
 import io.jmix.core.DataManager;
 import io.jmix.core.Metadata;
 import io.jmix.ui.component.ComboBox;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,8 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     private ComboBox<AstronomicalBody> departurePortAstronomicalBody;
     @Autowired
     private ComboBox<AstronomicalBody> destinationPortAstronomicalBody;
+    @Autowired
+    private ComboBox<Carrier> carrierField;
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
@@ -79,6 +84,56 @@ public class WaybillEdit extends StandardEditor<Waybill> {
                 .ifPresent(spaceport -> getEditedEntity().setDestinationPort(spaceport));
     }
 
+    @Subscribe("departurePortField")
+    public void onDeparturePortFieldValueChange(HasValue.ValueChangeEvent<Spaceport> event) {
+        Spaceport spaceport = event.getValue();
+        if (spaceport == null) {
+            departurePortAstronomicalBody.setValue(null);
+            setCarriers(false);
+        } else {
+            AstronomicalBody astronomicalBody = departurePortAstronomicalBody.getValue();
+            if (!Objects.equals(spaceport.getMoon(), astronomicalBody) && !Objects.equals(spaceport.getPlanet(),astronomicalBody)) {
+                departurePortAstronomicalBody.setValue(null);
+            }
+            if (this.getEditedEntity().getDestinationPort() != null) {
+                setCarriers(true);
+            }
+        }
+    }
 
+    @Subscribe("destinationPortField")
+    public void onDestinationPortFieldValueChange(HasValue.ValueChangeEvent<Spaceport> event) {
+        Spaceport spaceport = event.getValue();
+        if (spaceport == null) {
+            destinationPortAstronomicalBody.setValue(null);
+            setCarriers(false);
+        } else {
+            AstronomicalBody astronomicalBody = destinationPortAstronomicalBody.getValue();
+            if (!Objects.equals(spaceport.getMoon(), astronomicalBody) && !Objects.equals(spaceport.getPlanet(),astronomicalBody)) {
+                destinationPortAstronomicalBody.setValue(null);
+            }
+            if (this.getEditedEntity().getDeparturePort() != null) {
+                setCarriers(true);
+            }
+        }
+    }
+
+
+    private void setCarriers(boolean enabled) {
+        if (!enabled) {
+            carrierField.clear();
+            carrierField.setEnabled(false);
+            return;
+        }
+        List<Carrier> carriers = dataManager.load(Carrier.class)
+                .query("e.spaceports = ?1 and e.spaceports = ?2",
+                        getEditedEntity().getDeparturePort(), getEditedEntity().getDestinationPort())
+                .list();
+        if (carrierField.getValue() != null && !carriers.contains(carrierField.getValue())) {
+            carrierField.setValue(null);
+        }
+        carrierField.setOptionsList(carriers);
+        carrierField.setEnabled(true);
+    }
 
 }
