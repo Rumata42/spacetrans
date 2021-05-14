@@ -133,6 +133,10 @@ public class Waybill {
         return creator;
     }
 
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
     public String getReference() {
         return reference;
     }
