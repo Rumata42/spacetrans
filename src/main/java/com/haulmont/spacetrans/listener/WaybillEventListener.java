@@ -1,7 +1,7 @@
 package com.haulmont.spacetrans.listener;
 
+import com.haulmont.spacetrans.entity.User;
 import com.haulmont.spacetrans.entity.Waybill;
-import io.jmix.core.event.EntityChangedEvent;
 import io.jmix.core.event.EntitySavingEvent;
 import io.jmix.core.security.CurrentAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,7 @@ public class WaybillEventListener {
         if (!event.isNewEntity()) {
             return;
         }
-        // TODO
-        Object principal = currentAuthentication.getAuthentication().getPrincipal();
-//        event.getEntity().setCreator(.);
+        User creator = (User) currentAuthentication.getAuthentication().getPrincipal();
+        event.getEntity().setCreator(creator);
     }
 }

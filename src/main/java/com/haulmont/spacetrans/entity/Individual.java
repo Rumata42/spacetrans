@@ -1,6 +1,5 @@
 package com.haulmont.spacetrans.entity;
 
-import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.Column;
@@ -13,7 +12,6 @@ import javax.persistence.Table;
 @Entity(name = "st_Individual")
 @PrimaryKeyJoinColumn(name = "ID")
 public class Individual extends Customer {
-    @InstanceName
     @Column(name = "FIRST_NAME")
     private String firstName;
 

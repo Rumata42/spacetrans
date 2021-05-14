@@ -70,6 +70,12 @@ public class WaybillEdit extends StandardEditor<Waybill> {
         consigneeField.setEnabled(true);
     }
 
+    @Subscribe("consigneeField")
+    public void onConsigneeFieldValueChange(HasValue.ValueChangeEvent<Customer> event) {
+        // It doesn't work without that explicit assignment
+        this.getEditedEntity().setConsignee(event.getValue());
+    }
+
     @Subscribe("departurePortAstronomicalBody")
     public void onDeparturePortAstronomicalBodyValueChange(HasValue.ValueChangeEvent<AstronomicalBody> event) {
         Optional.ofNullable(event.getValue())
