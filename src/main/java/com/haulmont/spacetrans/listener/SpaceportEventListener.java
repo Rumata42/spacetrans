@@ -23,13 +23,20 @@ public class SpaceportEventListener {
         AttributeChanges changes = event.getChanges();
         if (changes.isChanged(IS_DEFAULT_FIELD) && !Boolean.TRUE.equals(changes.getOldValue(IS_DEFAULT_FIELD))) {
             Spaceport spaceport = dataManager.load(event.getEntityId()).one();
-            if (!spaceport.getIsDefault()) {
+            if (!spaceport.getIsDefault() || spaceport.getMoon() == null && spaceport.getPlanet() == null) {
                 return;
+            }
+            PropertyCondition astronomicalBodyCondition;
+            if (spaceport.getMoon() != null) {
+                astronomicalBodyCondition = PropertyCondition.equal("moon", spaceport.getMoon());
+            } else {
+                astronomicalBodyCondition = PropertyCondition.equal("planet", spaceport.getPlanet());
             }
             dataManager.load(Spaceport.class)
                     .condition(LogicalCondition.and(
                             PropertyCondition.equal(IS_DEFAULT_FIELD, true),
-                            PropertyCondition.notEqual("id", event.getEntityId().getValue())
+                            PropertyCondition.notEqual("id", event.getEntityId().getValue()),
+                            astronomicalBodyCondition
                     ))
                     .optional()
                     .ifPresent(previousDefaultSpaceport -> {
