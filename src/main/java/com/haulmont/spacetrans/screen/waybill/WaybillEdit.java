@@ -8,11 +8,16 @@ import com.haulmont.spacetrans.entity.CustomerType;
 import com.haulmont.spacetrans.entity.Moon;
 import com.haulmont.spacetrans.entity.Planet;
 import com.haulmont.spacetrans.entity.Spaceport;
+import com.haulmont.spacetrans.entity.WaybillItem;
 import io.jmix.core.DataManager;
 import io.jmix.core.Metadata;
+import io.jmix.ui.RemoveOperation;
+import io.jmix.ui.component.Button;
 import io.jmix.ui.component.ComboBox;
 import io.jmix.ui.component.EntityPicker;
 import io.jmix.ui.component.HasValue;
+import io.jmix.ui.component.Table;
+import io.jmix.ui.model.CollectionPropertyContainer;
 import io.jmix.ui.screen.*;
 import com.haulmont.spacetrans.entity.Waybill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +49,14 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     private ComboBox<AstronomicalBody> destinationPortAstronomicalBody;
     @Autowired
     private ComboBox<Carrier> carrierField;
+    @Autowired
+    private Table<WaybillItem> itemsTable;
+    @Autowired
+    private Button upButton;
+    @Autowired
+    private Button downButton;
+    @Autowired
+    private CollectionPropertyContainer<WaybillItem> itemsDc;
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
@@ -124,6 +137,50 @@ public class WaybillEdit extends StandardEditor<Waybill> {
         }
     }
 
+    @Install(to = "itemsTable.create", subject = "afterCommitHandler")
+    private void itemsTableCreateAfterCommitHandler(WaybillItem ignore) {
+        refreshItemsNumbers();
+    }
+
+    @Install(to = "itemsTable.remove", subject = "afterActionPerformedHandler")
+    private void itemsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<WaybillItem> ignore) {
+        refreshItemsNumbers();
+    }
+
+    @Subscribe("itemsTable")
+    public void onItemsTableSelection(Table.SelectionEvent<WaybillItem> event) {
+        WaybillItem selected = event.getSelected().stream().findFirst().orElse(null);
+        refreshUpDownButtons(selected);
+    }
+
+    @Subscribe("upButton")
+    public void onUpButtonClick(Button.ClickEvent event) {
+        WaybillItem selected = itemsTable.getSingleSelected();
+        assert selected != null && selected.getNumber() > 1;
+        int index = selected.getNumber() - 1;
+        getEditedEntity().getItems().remove(index);
+        getEditedEntity().getItems().add(index - 1, selected);
+        refreshItemsNumbers();
+        itemsDc.setItems(getEditedEntity().getItems());
+        refreshUpDownButtons(selected);
+    }
+
+    @Subscribe("downButton")
+    public void onDownButtonClick(Button.ClickEvent event) {
+        WaybillItem selected = itemsTable.getSingleSelected();
+        assert selected != null && selected.getNumber() < getEditedEntity().getItems().size();
+        int index = selected.getNumber() - 1;
+        getEditedEntity().getItems().remove(index);
+        getEditedEntity().getItems().add(index + 1, selected);
+        refreshItemsNumbers();
+        itemsDc.setItems(getEditedEntity().getItems());
+        refreshUpDownButtons(selected);
+    }
+
+    private void refreshUpDownButtons(WaybillItem selected) {
+        upButton.setEnabled(selected != null && selected.getNumber() > 1);
+        downButton.setEnabled(selected != null && selected.getNumber() < getEditedEntity().getItems().size());
+    }
 
     private void setCarriers(boolean enabled) {
         if (!enabled) {
@@ -140,6 +197,16 @@ public class WaybillEdit extends StandardEditor<Waybill> {
         }
         carrierField.setOptionsList(carriers);
         carrierField.setEnabled(true);
+    }
+
+    private void refreshItemsNumbers() {
+        List<WaybillItem> items = this.getEditedEntity().getItems();
+        for (int i = 0; i < items.size(); i++) {
+            WaybillItem item = items.get(i);
+            if (item.getNumber() == null || item.getNumber() != (i + 1)) {
+                item.setNumber(i + 1);
+            }
+        }
     }
 
 }

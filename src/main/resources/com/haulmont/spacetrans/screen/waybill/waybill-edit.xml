@@ -11,8 +11,10 @@
                 <property name="departurePort" fetchPlan="spaceport-with-planet-and-moon-fetch-plan"/>
                 <property name="destinationPort" fetchPlan="spaceport-with-planet-and-moon-fetch-plan"/>
                 <property name="carrier" fetchPlan="_base"/>
+                <property name="items" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
+            <collection id="itemsDc" property="items"/>
         </instance>
     </data>
     <facets>
@@ -54,8 +56,8 @@
                     </actions>
                 </entityPicker>
                 <comboBox id="carrierField" property="carrier" enable="false"/>
-                <textField id="totalWeightField" property="totalWeight"/>
-                <textField id="totalChargeField" property="totalCharge"/>
+                <textField id="totalWeightField" property="totalWeight" enable="false"/>
+                <textField id="totalChargeField" property="totalCharge" enable="false"/>
             </column>
             <column width="350px">
                 <radioButtonGroup id="shipperTypeField"
@@ -68,6 +70,31 @@
                 <comboBox id="destinationPortAstronomicalBody" caption="or pick a Planet or Moon"/>
             </column>
         </form>
+        <groupBox id="itemsBox" caption="msg://com.haulmont.spacetrans.entity/Waybill.items">
+            <table id="itemsTable" dataContainer="itemsDc" width="100%" height="500px" sortable="false">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="number"/>
+                    <column id="name"/>
+                    <column id="weight"/>
+                    <column id="dim.length"/>
+                    <column id="dim.width"/>
+                    <column id="dim.height"/>
+                    <column id="charge"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="itemsTable.create"/>
+                    <button action="itemsTable.edit"/>
+                    <button action="itemsTable.remove"/>
+                    <button id="upButton" caption="Up" enable="false"/>
+                    <button id="downButton" caption="Down" enable="false"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -63,6 +64,7 @@ public class Waybill {
 
     @Composition
     @OneToMany(mappedBy = "waybill")
+    @OrderBy("number")
     private List<WaybillItem> items;
 
     @PositiveOrZero
