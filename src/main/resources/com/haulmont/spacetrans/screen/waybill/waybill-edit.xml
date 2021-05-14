@@ -62,6 +62,8 @@
                 <radioButtonGroup id="consigneeTypeField"
                                   orientation="horizontal"
                                   optionsEnum="com.haulmont.spacetrans.entity.CustomerType"/>
+                <comboBox id="departurePortAstronomicalBody" caption="or pick a Planet or Moon"/>
+                <comboBox id="destinationPortAstronomicalBody" caption="or pick a Planet or Moon"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">
