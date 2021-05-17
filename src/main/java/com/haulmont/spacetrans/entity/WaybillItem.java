@@ -9,6 +9,7 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -56,7 +57,7 @@ public class WaybillItem {
     private BigDecimal charge;
     @OnDeleteInverse(DeletePolicy.CASCADE)
     @JoinColumn(name = "WAYBILL_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.MERGE)
     private Waybill waybill;
 
     public Waybill getWaybill() {

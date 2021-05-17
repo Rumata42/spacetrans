@@ -21,6 +21,8 @@
               caption="msg://com.haulmont.spacetrans.screen.individual/individualBrowse.caption"/>
         <item screen="st_Company.browse" caption="msg://com.haulmont.spacetrans.screen.company/companyBrowse.caption"/>
         <item screen="st_Waybill.browse" caption="msg://com.haulmont.spacetrans.screen.waybill/waybillBrowse.caption"/>
+        <item screen="st_Discount.browse"
+              caption="msg://com.haulmont.spacetrans.screen.discount/discountBrowse.caption"/>
     </menu>
 
 </menu-config>

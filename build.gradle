@@ -1,6 +1,7 @@
 plugins {
     id 'io.jmix' version '0.9.0'
     id 'java'
+    id 'idea'
 }
 
 apply plugin: 'org.springframework.boot'
@@ -18,6 +19,13 @@ repositories {
     mavenCentral()
     maven {
         url 'https://global.repo.jmix.io/repository/public'
+    }
+}
+
+idea {
+    module {
+        sourceDirs -= file('src/main/java')
+        testSourceDirs += file('src/test/java')
     }
 }
 

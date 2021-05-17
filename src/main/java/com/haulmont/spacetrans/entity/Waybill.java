@@ -69,11 +69,11 @@ public class Waybill {
 
     @PositiveOrZero
     @Column(name = "TOTAL_WEIGHT")
-    private Double totalWeight;
+    private Double totalWeight = 0.0;
 
     @PositiveOrZero
     @Column(name = "TOTAL_CHARGE")
-    private Double totalCharge;
+    private Double totalCharge = 0.0;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "CARRIER_ID", nullable = false)

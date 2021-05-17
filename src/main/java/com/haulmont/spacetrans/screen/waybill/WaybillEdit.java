@@ -1,6 +1,7 @@
 package com.haulmont.spacetrans.screen.waybill;
 
 import com.haulmont.spacetrans.app.SpaceportService;
+import com.haulmont.spacetrans.app.WaybillChargeCalculator;
 import com.haulmont.spacetrans.entity.AstronomicalBody;
 import com.haulmont.spacetrans.entity.Carrier;
 import com.haulmont.spacetrans.entity.Customer;
@@ -57,6 +58,8 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     private Button downButton;
     @Autowired
     private CollectionPropertyContainer<WaybillItem> itemsDc;
+    @Autowired
+    private WaybillChargeCalculator waybillChargeCalculator;
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
@@ -138,13 +141,20 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     }
 
     @Install(to = "itemsTable.create", subject = "afterCommitHandler")
-    private void itemsTableCreateAfterCommitHandler(WaybillItem ignore) {
+    private void itemsTableCreateAfterCommitHandler(WaybillItem waybillItem) {
         refreshItemsNumbers();
+        refreshItemCharge(waybillItem);
+    }
+
+    @Install(to = "itemsTable.edit", subject = "afterCommitHandler")
+    private void itemsTableEditAfterCommitHandler(WaybillItem waybillItem) {
+        refreshItemCharge(waybillItem);
     }
 
     @Install(to = "itemsTable.remove", subject = "afterActionPerformedHandler")
     private void itemsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<WaybillItem> ignore) {
         refreshItemsNumbers();
+        waybillChargeCalculator.calculateWaybillTotals(getEditedEntity());
     }
 
     @Subscribe("itemsTable")
@@ -207,6 +217,18 @@ public class WaybillEdit extends StandardEditor<Waybill> {
                 item.setNumber(i + 1);
             }
         }
+    }
+
+    public void refreshItemCharge(WaybillItem item) {
+        boolean changed = waybillChargeCalculator.calculateItemCharge(item);
+        if (!changed) {
+            return;
+        }
+        getEditedEntity().getItems().stream()
+                .filter(i -> i.getId().equals(item.getId()))
+                .findAny()
+                .ifPresent(i -> i.setCharge(item.getCharge()));
+        waybillChargeCalculator.calculateWaybillTotals(getEditedEntity());
     }
 
 }
