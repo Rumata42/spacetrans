@@ -11,11 +11,11 @@
 <!--              caption="msg://com.haulmont.spacetrans.screen.atmosphere/atmosphereBrowse.caption"/>-->
         <item screen="st_Planet.browse" caption="msg://com.haulmont.spacetrans.screen.planet/planetBrowse.caption"/>
         <item screen="st_Moon.browse" caption="msg://com.haulmont.spacetrans.screen.moon/moonBrowse.caption"/>
+        <item screen="st_Spaceport.browse"
+              caption="msg://com.haulmont.spacetrans.screen.spaceport/spaceportBrowse.caption"/>
     </menu>
 
     <menu id="transportation" caption="msg://com.haulmont.spacetrans/menu.transportation" insertBefore="administration">
-        <item screen="st_Spaceport.browse"
-              caption="msg://com.haulmont.spacetrans.screen.spaceport/spaceportBrowse.caption"/>
         <item screen="st_Carrier.browse" caption="msg://com.haulmont.spacetrans.screen.carrier/carrierBrowse.caption"/>
         <item screen="st_Individual.browse"
               caption="msg://com.haulmont.spacetrans.screen.individual/individualBrowse.caption"/>
