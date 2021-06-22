@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="st">
+        <createTable tableName="ST_NEW_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ST_NEW_ENTITY"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="st">
+        <dropForeignKeyConstraint baseTableName="audit_logged_attr" constraintName="fk_audit_logged_attr_entity"/>
+    </changeSet>
+    <changeSet id="3" author="st">
+        <dropForeignKeyConstraint baseTableName="email_sending_attachment"
+                                  constraintName="fk_email_attachment_message"/>
+    </changeSet>
+    <changeSet id="4" author="st">
+        <dropUniqueConstraint constraintName="audit_logged_attr_uniq_name" tableName="audit_logged_attr"/>
+    </changeSet>
+    <changeSet id="5" author="st">
+        <dropUniqueConstraint constraintName="audit_logged_entity_name_key" tableName="audit_logged_entity"/>
+    </changeSet>
+    <changeSet id="6" author="st">
+        <dropTable cascadeConstraints="true" tableName="audit_entity_log"/>
+    </changeSet>
+    <changeSet id="7" author="st">
+        <dropTable cascadeConstraints="true" tableName="audit_logged_attr"/>
+    </changeSet>
+    <changeSet id="8" author="st">
+        <dropTable cascadeConstraints="true" tableName="audit_logged_entity"/>
+    </changeSet>
+    <changeSet id="9" author="st">
+        <dropTable cascadeConstraints="true" tableName="email_sending_attachment"/>
+    </changeSet>
+    <changeSet id="10" author="st">
+        <dropTable cascadeConstraints="true" tableName="email_sending_message"/>
+    </changeSet>
+</databaseChangeLog>

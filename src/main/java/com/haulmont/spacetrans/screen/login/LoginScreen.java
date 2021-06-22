@@ -3,7 +3,7 @@ package com.haulmont.spacetrans.screen.login;
 import io.jmix.core.CoreProperties;
 import io.jmix.core.Messages;
 import io.jmix.securityui.authentication.AuthDetails;
-import io.jmix.securityui.authentication.LoginScreenAuthenticationSupport;
+import io.jmix.securityui.authentication.LoginScreenSupport;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.CheckBox;
@@ -18,6 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @UiController("st_LoginScreen")
 @UiDescriptor("login-screen.xml")
@@ -43,7 +44,7 @@ public class LoginScreen extends Screen {
     private Messages messages;
 
     @Autowired
-    private LoginScreenAuthenticationSupport authenticationSupport;
+    private LoginScreenSupport authenticationSupport;
 
     @Autowired
     private CoreProperties coreProperties;
@@ -56,8 +57,9 @@ public class LoginScreen extends Screen {
     }
 
     private void initLocalesField() {
-        localesField.setOptionsMap(coreProperties.getAvailableLocales());
-        localesField.setValue(coreProperties.getAvailableLocales().values().iterator().next());
+        localesField.setOptionsMap(coreProperties.getAvailableLocales().stream().collect(Collectors.toMap(
+                Locale::getDisplayName, it -> it)));
+        localesField.setValue(coreProperties.getAvailableLocales().iterator().next());
     }
 
     private void initDefaultCredentials() {
