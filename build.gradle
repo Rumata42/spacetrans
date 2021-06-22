@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '0.9.0'
+    bomVersion = '1.0.0-SNAPSHOT'
     projectId = 'st'
 }
 
@@ -15,10 +15,11 @@ group = 'com.company'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-repositories {
+repositories { 
+    mavenLocal()
     mavenCentral()
     maven {
-        url 'https://global.repo.jmix.io/repository/public'
+        url 'https://nexus.jmix.io/repository/public'
     }
 }
 
